@@ -1,0 +1,771 @@
+<ion-view  view-title="ADD NEW PROFILE">
+  <ion-content class="tabAdd">
+  <div ng-show="addProfileVisible">
+    <center>
+    <!-- <button class="button button-full" ng-click="refreshPage()" >TEST</button> -->
+    <h2>SHELTER AND HOUSING DEVELOPMENT </br> 
+        MULTI-SECTORIAL TASK FORCE      </br>
+    </h2>
+    <h2>
+        ESTATE MANAGEMENT DIVISION      
+    </h2> 
+    <h3>
+        Socialized Housing Program      </br>
+        Version: 0426451800             </br>
+        For the area of                 </br> <!-- add area settings in the SETTINGS TAB -->
+        {{surveySettings.AOS}}
+    </h3>
+
+    <h4>{{date | date:'medium'}}</h4>
+    Date of Interview
+    <h4>{{surveySettings.AC}}</h4>
+    Area Coordinator
+    </center></br>
+
+    <label class="item item-input item-stacked-label">
+      <div class="input-label" >A1</div>
+    </label>
+    <div>
+      <ion-checkbox dark ng-model="surveyRaw.A1_entryPass"   ng-click="eval_A1_1()" >Entry Pass</ion-checkbox>
+      <ion-checkbox dark ng-model="surveyRaw.A1_certificate" ng-click="eval_A1_2()">Certificate</ion-checkbox>
+    </div>
+    <br>
+
+    <label class="item item-input item-stacked-label">
+      <div class="input-label" >A2 Block Number</div>
+      <input type="text" ng-model="surveyInput.A2_blockNumber">
+    </label>
+
+    <label class="item item-input item-stacked-label">
+      <div class="input-label">Lot Number</div>
+      <input class="txtInput" type="text" ng-model="surveyInput.A2_lotNumber" >
+    </label>
+
+    <label class="item item-input item-stacked-label">
+      <div class="input-label">House Number</div>
+      <input type="text" ng-model="surveyInput.A2_houseNumber" >
+    </label>    
+
+    <label class="item item-input item-stacked-label">
+      <div class="input-label">Building Number</div>
+      <input type="text" ng-model="surveyInput.A2_buildingNumber" >
+    </label>
+
+    <label class="item item-input item-stacked-label">
+      <div class="input-label">(or) Address </div>
+      <input type="text" ng-model="surveyInput.A2_address" >
+    </label><br>
+
+    <label class="item item-input item-stacked-label">
+      <div class="input-label">A3 Occupant</div>
+    </label>
+    <label class="item item-input item-stacked-label item-select">
+      <select ng-model="surveyInput.A3_occupant">
+        <option value="Beneficiary">Beneficiary</option>
+        <option value="Non-Beneficiary">Non-Beneficiary</option>
+      </select>
+    </label>
+
+    <label class="item item-input item-stacked-label">
+      <div class="input-label">Number of people in Household </div>
+      <input type="text" ng-model="surveyInput.A3_hh" >
+    </label><br>
+
+    <label class="item item-input item-stacked-label">
+      <div class="input-label">A4 Reason for relocation/Application</div>
+    </label>
+    <label class="item item-input item-stacked-label item-select">
+      <select ng-model="surveyInput.A4_reasonForReloc" ng-change="eval_A4()">
+        <option value="Typhoon Sendong">Typhoon Sendong</option>
+        <option value="Fire">Fire</option>
+        <option value="Demolition">Demolition</option>
+        <option value="Piso-piso Program">Piso-piso Program</option>
+        <option value="Infrastructure/Road Constuction">Infrastructure/Road Constuction</option>
+        <option value="Eastment/River Bank">Eastment/River Bank</option>
+        <option value="Others">Others (Specify)</option>
+      </select>      
+    </label> 
+    <label class="item item-input item-stacked-label" ng-show="surveyRaw.A4_others">
+      <input type="text" ng-model="surveyRaw.A4_reasonForReloc" placeholder="Specify reason here" >
+    </label>
+    <br>
+
+    <label class="item item-input item-stacked-label">
+      <div class="input-label">A5 Place of origin</div>
+      <input type="text" ng-model="surveyInput.A5_placeOfOrigin" >
+    </label><br>
+
+    <center>
+      <h2>
+        I. GENERAL HOUSING AND HOUSEHOLD INFORMATION      
+      </h2> 
+    </center>
+
+     <label class="item item-input item-stacked-label">
+      <div class="input-label">A6 Water Source</div>
+     </label>
+    <label class="item item-input item-stacked-label item-select">
+      <select ng-model="surveyInput.A6_waterSource" ng-change="eval_A6()">
+        <option value="COWD">COWD</option>
+        <option value="Deep Well">Deep Well</option>
+        <option value="Communal">Communal</option>
+        <option value="Others">Others</option>
+      </select>
+    </label>
+    <label class="item item-input item-stacked-label" ng-show="surveyRaw.A6_others">
+      <input type="text" ng-model="surveyRaw.A6_waterSource" placeholder="Specify other water source here" >
+    </label>    
+
+    <br>
+
+     <label class="item item-input item-stacked-label ">
+      <div class="input-label">A7 Electricity</div>
+     </label>
+    <label class="item item-input item-stacked-label item-select">
+      <select ng-model="surveyInput.A7_electricity">
+        <option value="YES">YES</option>
+        <option value="NO">NO</option>
+      </select>
+    </label><br>
+
+     <label class="item item-input item-stacked-label ">
+      <div class="input-label">A8 House Alterations</div>
+     </label>
+    <label class="item item-input item-stacked-label item-select">
+      <select ng-model="surveyInput.A8_houseAlterations">
+        <option value="YES">YES</option>
+        <option value="NO">NO</option>
+      </select>
+    </label><br><br>
+
+     <label class="item item-input item-stacked-label ">
+      <div class="input-label">A9 Type of alterations</div>
+     </label>
+    <label class="item item-input item-stacked-label item-select">
+      <select ng-model="surveyInput.A9_typeOfAlterations" ng-change="eval_A9()">
+        <option value="Horizontal">Horizontal</option>
+        <option value="Vertical">Vertical</option>
+        <option value="Concrete Fence">Concrete Fence</option>
+        <option value="Others">Others</option>
+      </select>
+    </label> 
+    <label class="item item-input item-stacked-label" ng-show="surveyRaw.A9_others">
+      <input type="text" ng-model="surveyRaw.A9_typeOfAlterations" placeholder="Specify other alteration here" >
+    </label>
+    <br>
+
+    <label class="item item-input item-stacked-label">
+      <div class="input-label">A10 Household Amenities <br> (leave unchecked if NONE)</div>
+    </label>
+    <div>
+      <ion-checkbox dark ng-model="surveyRaw.A10_arr[0]" >TV</ion-checkbox>
+      <ion-checkbox dark ng-model="surveyRaw.A10_arr[1]" >Radio/Component</ion-checkbox>
+      <ion-checkbox dark ng-model="surveyRaw.A10_arr[2]" >DVD Player</ion-checkbox>
+      <ion-checkbox dark ng-model="surveyRaw.A10_arr[3]" >PC/Laptop</ion-checkbox>
+      <ion-checkbox dark ng-model="surveyRaw.A10_arr[4]" >Rice Cooker</ion-checkbox>
+      <ion-checkbox dark ng-model="surveyRaw.A10_arr[5]" >Refrigerator</ion-checkbox>
+      <ion-checkbox dark ng-model="surveyRaw.A10_arr[6]" >Electric Fan</ion-checkbox>
+      <ion-checkbox dark ng-model="surveyRaw.A10_arr[7]" >Electric Iron</ion-checkbox>
+      <ion-checkbox dark ng-model="surveyRaw.A10_arr[8]" >Stove/Oven</ion-checkbox>
+      <ion-checkbox dark ng-model="surveyRaw.A10_arr[9]" >Washing Machine</ion-checkbox>
+    </div>
+    <br>
+
+    <label class="item item-input item-stacked-label">
+      <div class="input-label">A11 Vehicles <br> (leave unchecked if NONE)</div>
+    </label>
+    <div>
+    <ion-checkbox dark ng-model="surveyRaw.A11_arr[0]" >Car/Pick-up Truck</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.A11_arr[1]" >Cargo Truck</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.A11_arr[2]" >Jeepney/Multicab</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.A11_arr[3]" >Motorcycle</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.A11_arr[4]" >Motorela</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.A11_arr[5]" >Bicycle</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.A11_arr[6]" >Tri-sikad</ion-checkbox>
+
+    </div>
+
+    <br>
+    <label class="item item-input item-stacked-label">
+      <div class="input-label">A12 Remarks</div>
+      <textarea placeholder="Remarks" rows="8" ng-model="surveyInput.A12_remarks"></textarea>
+
+    </label><br>
+
+    <center>
+      <h2>
+        II. HOUSEHOLD MEMBERS INFORMATION      
+      </h2> 
+    </center>
+
+      <label class="item item-input item-stacked-label">
+        <div id="fMembers" class="input-label">Members</div>
+      </label>     
+      <label class="item item-input item-stacked-label">
+        <div class="input-label ">
+          <ul>
+            <li ng-repeat="member in bGroup track by $index">
+              {{member.firstName}} {{member.lastName}} - {{member.B1_relationToHhH}}
+            </li>
+            <li ng-if="bGroup.length == 0">
+              <strong>No Members</strong>
+            </li>
+          </ul>          
+        </div>
+      </label>      
+      <button  class="button button-large button-full button-positive icon-left ion-android-add-circle" ng-click="addMemberFormVisible = !addMemberFormVisible">
+      Add member
+      </button>
+
+      <div class="animate-show" ng-show="addMemberFormVisible">
+        <label class="item item-input item-stacked-label">
+          <div class="input-label">First Name</div>
+          <input type="text" ng-model="bGroupInput.firstName" >
+        </label>
+        <label class="item item-input item-stacked-label">
+          <div class="input-label">Last Name</div>
+          <input type="text" ng-model="bGroupInput.lastName" >
+        </label>
+        <label class="item item-input item-stacked-label">
+          <div class="input-label">Middle Name</div>
+          <input type="text" ng-model="bGroupInput.middleName" >
+        </label>
+
+        <label class="item item-input">
+          <div class="input-label">
+            B1 Relation to HhH
+          </div>
+        </label>
+        <label class="item item-input item-stacked-label item-select">
+          <select ng-model="bGroupInput.B1_relationToHhH" ng-change="eval_B1()">
+            <option ng-repeat="relationship in surveyRaw.B1_arr"value="{{relationship}}" >{{relationship}}</option>
+          </select>
+        </label>
+        <label class="item item-input item-stacked-label" ng-show="bGroupRaw.B1_others">
+          <input type="text" ng-model="bGroupRaw.B1_relationToHhH" placeholder="Specify relationship here" >
+        </label><br>        
+
+        <label class="item item-input">
+          <div class="input-label">
+            B2 Sex
+          </div>
+        </label>
+        <label class="item item-input item-stacked-label item-select">
+          <select ng-model="bGroupInput.B2_sex">
+            <option value="Male" >Male</option>
+            <option value="Female" selected>Female</option>
+          </select>
+        </label>
+
+        <label class="item item-input item-stacked-label">
+          <div class="input-label">B3 Date of Birth</div>
+          <input type="date" max="{{date}}" ng-model="bGroupInput.B3_dob">
+        </label>
+        <label class="item item-input item-stacked-label">
+          <div class="input-label">B4 Birthplace</div>
+          <input type="text" ng-model="bGroupInput.B4_birthplace" >
+        </label>    
+
+        <label class="item item-input">
+          <div class="input-label">
+            B5 Marital Status
+          </div>
+        </label>
+        <label class="item item-input item-stacked-label item-select">
+          <select ng-model="bGroupInput.B5_maritalStatus">
+            <option value="Single" selected>Single</option>
+            <option value="Married">Married</option>
+            <option value="Widowed">Widowed</option>
+            <option value="Separated">Separated</option>
+            <option value="Common Law/ Cohabitation">Common Law/ Cohabitation</option>
+          </select>
+        </label>            
+
+        <label class="item item-input">
+          <div class="input-label">
+            B6 Education
+          </div>
+        </label>
+        <label class="item item-input item-stacked-label item-select">
+          <select ng-model="bGroupInput.B6_education">
+            <option value="None" selected>None</option>
+            <option value="Elementary">Elementary</option>
+            <option value="High School">High School</option>
+            <option value="Vocational">Vocational</option>
+            <option value="College and over">College and over</option>
+          </select>
+        </label>    
+
+        <label class="item item-input">
+          <div class="input-label">
+            B7 Occupation
+          </div>
+        </label>
+        <label class="item item-input item-stacked-label item-select">
+          <select ng-model="bGroupInput.B7_occupation" ng-change="eval_B7()">
+            <option value="None" selected>None</option>
+            <option value="Student">Student</option>
+            <option value="Housekeeper">Housekeeper</option>
+            <option value="Laborer/Porter">Laborer/Porter</option>
+            <option value="Vendor">Vendor</option>
+            <option value="Store Owner">Store Owner</option>
+            <option value="Personal Services">Personal Services</option>
+            <option value="Professional/Self-Employed">Professional/Self-Employed</option>
+            <option value="Helpers">Helpers</option>
+            <option value="Private Employee">Private Employee</option>
+            <option value="Driver (PUV)">Driver (PUV)</option>
+            <option value="Driver (Rela/Sikad)">Driver (Rela/Sikad)</option>
+            <option value="OFW">OFW</option>
+            <option value="Pensioner">Pensioner</option>
+            <option value="Carpenter/Construction">Carpenter/Construction</option>
+            <option value="Others">Others (Specify)</option>
+          </select>
+        </label> 
+        <label class="item item-input item-stacked-label" ng-show="bGroupRaw.B7_others">
+          <input type="text" ng-model="bGroupRaw.B7_occupation" placeholder="Specify Occupation here" >
+        </label><br>         
+
+        <label class="item item-input">
+          <div class="input-label">
+            B8 Status of Occupation
+          </div>
+        </label>
+        <label class="item item-input item-stacked-label item-select">
+          <select ng-model="bGroupInput.B8_stateOfOccupation" ng-change="eval_B8()">
+            <option value="None" selected>None</option>
+            <option value="Permanent/Regular">Permanent/Regular</option>
+            <option value="Temporary/Casual">Temporary/Casual</option>
+            <option value="Contractual/Project-Based">Contractual/Project-Based</option>
+            <option value="Seasonal">Seasonal</option>
+            <option value="Daily Basis/Adlawan">Daily Basis/Adlawan</option>
+            <option value="Others">Others (specify)</option>
+          </select>
+        </label>    
+        <label class="item item-input item-stacked-label" ng-show="bGroupRaw.B8_others">
+          <input type="text" ng-model="bGroupRaw.B8_stateOfOccupation" placeholder="Specify Status of Occupation here" >
+        </label><br>                        
+
+        <label class="item item-input">
+          <div class="input-label">
+            B9 Place of work
+          </div>
+        </label>
+        <label class="item item-input item-stacked-label item-select">
+          <select ng-model="bGroupInput.B9_placeOfWork" ng-change="eval_B9()">
+            <option value="None" selected>None</option>
+            <option value="Within relocation site<">Within relocation site</option>
+            <option value="Place of origin">Place of origin</option>
+            <option value="No definite area/ambulant/mobile">No definite area/ambulant/mobile</option>
+            <option value="Abroad">Abroad</option>
+            <option value="Within City">Within City</option>
+            <option value="Outside City">Outside City</option>
+            <option value="Others">Others (Specify)</option>
+          </select>
+        </label>
+        <label class="item item-input item-stacked-label" ng-show="bGroupRaw.B9_others">
+          <input type="text" ng-model="bGroupRaw.B9_placeOfWork" placeholder="Specify Place of work here" >
+        </label><br>     
+
+        <label class="item item-input item-stacked-label">
+          <div class="input-label">B10 Monthly Income</div>
+          <input type="number" ng-model="bGroupInput.B10_monthlyIncome" >
+        </label>   
+
+        <label class="item item-input">
+          <div class="input-label">
+            B11 Membership in Institutions<br> (leave unchecked if NONE)
+          </div>
+        </label>
+        <div>
+          <ion-checkbox dark ng-model="bGroupRaw.B11_arr[0]" >GSIS</ion-checkbox>
+          <ion-checkbox dark ng-model="bGroupRaw.B11_arr[1]" >SSS</ion-checkbox>
+          <ion-checkbox dark ng-model="bGroupRaw.B11_arr[2]" >PAGIBIG</ion-checkbox>
+          <ion-checkbox dark ng-model="bGroupRaw.B11_others" >Others (Specify and separate each with a comma)</ion-checkbox>
+        </div>
+        <label class="item item-input item-stacked-label" ng-show="bGroupRaw.B11_others">
+          <input type="text" ng-model="bGroupRaw.B11_arr[3]" placeholder="Specify Institutions here" >
+        </label><br>   
+                
+
+        <label class="item item-input">
+          <div class="input-label">
+            B12 Beneficiary<br> (leave unchecked if NONE)
+          </div>
+        </label>
+        <div>
+          <ion-checkbox dark ng-model="bGroupRaw.B12_arr[0]" >4Ps</ion-checkbox>
+          <ion-checkbox dark ng-model="bGroupRaw.B12_arr[1]" >PhilHealth</ion-checkbox>
+          <ion-checkbox dark ng-model="bGroupRaw.B12_arr[2]" >Livelihood</ion-checkbox>
+          <ion-checkbox dark ng-model="bGroupRaw.B12_arr[3]" >Training</ion-checkbox>
+          <ion-checkbox dark ng-model="bGroupRaw.B12_others" >Others (Specify and separate each with a comma)</ion-checkbox>
+        </div>
+        <label class="item item-input item-stacked-label" ng-show="bGroupRaw.B12_others">
+          <input type="text" ng-model="bGroupRaw.B12_arr[4]" placeholder="Specify Beneficiaries here" >
+        </label><br>         
+        
+        <label class="item item-input">
+          <div class="input-label">
+            B13 Skills
+          </div>
+        </label>
+        <label class="item item-input item-stacked-label item-select">
+          <select ng-model="bGroupInput.B13_skills" ng-change="eval_B13()">
+            <option value="None" selected>None</option>
+            <option value="Not Applicable">Not Applicable</option>
+            <option value="Others">Others (State Skill)</option>
+          </select>
+        </label>  
+        <label class="item item-input item-stacked-label" ng-show="bGroupRaw.B13_others">
+          <input type="text" ng-model="bGroupRaw.B13_skills" placeholder="Specify Skill here" >
+        </label><br>          
+
+        <label class="item item-input">
+          <div class="input-label">
+            B14 Health Status
+          </div>
+        </label>
+        <label class="item item-input item-stacked-label item-select">
+          <select ng-model="bGroupInput.B14_healthStatus" ng-change="eval_B14()">
+            <option value="Disabled">Disabled</option>
+            <option value="Pregnant">Pregnant</option>
+            <option value="Lactating">Lactating</option>
+            <option value="Senior Citizen">Senior Citizen</option>
+            <option value="Others">Others (Specify)</option>
+          </select>
+        </label>
+        <label class="item item-input item-stacked-label" ng-show="bGroupRaw.B14_others">
+          <input type="text" ng-model="bGroupRaw.B14_healthStatus" placeholder="Specify Health Status here" >
+        </label><br>              
+
+        <label class="item item-input">
+          <div class="input-label">
+            B15  Status
+          </div>
+        </label>
+        <label class="item item-input item-stacked-label item-select">
+          <select ng-model="bGroupInput.B15_status">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </label>   
+        <label class="item item-input item-stacked-label">
+          <div class="input-label">B16 Remarks</div>
+        <textarea placeholder="Remarks" rows="8" ng-model="bGroupInput.B16_remarks"></textarea>
+
+      </label><br>
+      <button  class="button button-large button-full button-positive"  ng-click="addMemberFormVisible = !addMemberFormVisible; saveMemberTo_bGroup();">
+      Save Member
+      </button>
+      </div>    
+
+    <center>
+      <h2>
+        III. INCOME GENERATING ACTIVITIES (IGA)      
+      </h2> 
+    </center>   
+
+    <label class="item item-input">
+      <div class="input-label">
+        C1 Are you engaged in any income <br> generating activity?
+      </div>
+    </label>
+    <label class="item item-input item-stacked-label item-select">
+      <select  ng-model="surveyInput.C1" ng-change="eval_C1()">
+        <option value="No" selected>No</option>
+        <option value="Yes">Yes (Specify)</option>
+      </select>
+    </label>
+    <label class="item item-input item-stacked-label" ng-show="surveyRaw.C1_show">
+      <input type="text" ng-model="surveyRaw.C1" placeholder="Specify here" >
+    </label>
+    <br>
+
+    <label class="item item-input">
+      <div class="input-label">
+        C2 Are you interested to engaged in <br> an income generating project
+      </div>
+    </label>
+    <label class="item item-input item-stacked-label item-select">
+      <select ng-model="surveyInput.C2" ng-change="eval_C2()">
+        <option value="No" selected>No</option>
+        <option value="Yes">Yes (Specify)</option>
+      </select>
+    </label>
+    <label class="item item-input item-stacked-label" ng-show="surveyRaw.C2_show">
+      <input type="text" ng-model="surveyRaw.C2" placeholder="Specify here" >
+    </label>
+    <br>
+
+    <label class="item item-input">
+      <div class="input-label">
+        C3 Have any of your family members <br>recieved vocational/skill training?
+      </div>
+    </label>
+    <label class="item item-input item-stacked-label item-select">
+      <select ng-model="surveyInput.C3" ng-change="eval_C3()">
+        <option value="No" selected>No</option>
+        <option value="Yes">Yes (Specify)</option>
+      </select>
+    </label>
+    <label class="item item-input item-stacked-label" ng-show="surveyRaw.C3_show">
+      <input type="text" ng-model="surveyRaw.C3" placeholder="Specify here" >
+    </label>
+    <br>
+
+    <label class="item item-input">
+      <div class="input-label">
+        C4 Are there any skills that you wish<br> to learn?
+      </div>
+    </label>
+    <label class="item item-input item-stacked-label item-select">
+      <select ng-model="surveyInput.C4" ng-change="eval_C4()">
+        <option value="No" selected>No</option>
+        <option value="Yes">Yes (Specify)</option>
+      </select>
+    </label>
+    <label class="item item-input item-stacked-label" ng-show="surveyRaw.C4_show">
+      <input type="text" ng-model="surveyRaw.C4" placeholder="Specify here" >
+    </label>
+    <br>
+
+    <center>
+      <h2>
+        IV. MIGRATION PATTERN <br>
+        (Last five years)      
+      </h2> 
+    </center>   
+
+    
+    <label class="item item-input item-stacked-label">
+        <div class="input-label ">
+          <ul >
+            <center> House Hold Head </center>
+            <li ng-repeat="pattern in mPattern track by $index">
+              {{pattern.HHH_place}} - {{pattern.HHH_iDate}} <br>
+            </li>
+            <center> Spouse </center>
+            <li ng-repeat="pattern in mPattern track by $index">
+              {{pattern.sp_place}} - {{pattern.sp_iDate}}
+            </li>
+            
+            <li ng-if="mPattern.length == 0">
+              <strong>No Patterns</strong>
+            </li>
+          </ul>          
+        </div>
+      </label>      
+    <button  class="button button-large button-full button-positive icon-left ion-android-add-circle" ng-click="addPatternForm = !addPatternForm">
+      Add Pattern
+    </button>
+
+    <div class="animate-show" ng-hide="addPatternForm">
+
+      <label class="item item-input item-stacked-label">
+          <div class="input-label">HHH</div>
+      </label>    
+
+      <label class="item item-input item-stacked-label">
+          <div class="input-label">Place</div>
+          <input type="text" ng-model="mPatternInput.HHH_place">
+      </label>              
+
+      <label class="item item-input item-stacked-label">
+          <div class="input-label" >Inclusive Date</div>
+          <input type="text" ng-model="mPatternInput.HHH_iDate">
+      </label>
+      <br>
+
+
+      <label class="item item-input item-stacked-label">
+          <div class="input-label">Spouse</div>
+      </label>     
+
+      <label class="item item-input item-stacked-label">
+          <div class="input-label" >Place</div>
+          <input type="text" ng-model="mPatternInput.sp_place">
+      </label>  
+
+      <label class="item item-input item-stacked-label">
+          <div class="input-label" >Inclusive Date</div>
+          <input type="text" ng-model="mPatternInput.sp_iDate">
+      </label>
+      <br>
+      <button  class="button button-large button-full button-positive"  ng-click="addPatternForm = !addPatternForm; savePatternTo_mPattern();">
+      Submit
+      </button>
+
+    </div>
+
+    <center>
+      <h2>
+        V. CHECKLIST BASIC SERVICES
+      </h2> 
+    </center>
+
+
+    <div>
+    <ion-checkbox dark ng-model="surveyRaw.D1_water" >D1 Water</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.D2_electricity" >D2 Electricity</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.D3_garabageCollection" >D3 Garbage Collection</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.D4_toiletFacilities" >D4 Toilet Facilities</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.D5_healthCenter" >D5 Health Center</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.D6_privateHealthClinics" >D6 Private Health Clinics</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.D7_traditionalHealersAlternative" >D7 Traditional Healers/Alternative</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.D8_dayCareCenterPreSChool" >D8 Day Care Center/Pre School</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.D9_elementarySchool" >D9 Elementary School</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.D10_highSchool" >D10 High School</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.D11_marketTalipapa" >D11 Market/Talipapa</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.D12_baraggayHall" >D12 Baranggay Hall</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.D13_policeOutpost" >D13 Police Outpost</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.D14_recreationalFacilities" >D14 Recreational Facilites</ion-checkbox>
+    <ion-checkbox dark ng-model="surveyRaw.D15_publicTransport" >D15 Public Transport</ion-checkbox>
+    </div><br>
+
+    <label class="item item-input item-stacked-label">
+      <div class="input-label">D16 Remarks</div>
+      <textarea placeholder="Remarks" ng-model="surveyInput.D16_remarks" rows="8"></textarea>
+    </label><br> 
+    
+
+    <center>
+      <h2>
+        VI. OTHER INFORMATION
+      </h2> 
+    </center>
+
+    <label class="item item-input">
+      <div class="input-label">
+        E1 Estado sa pagpuyo sa balay:
+      </div>
+    </label>
+    <label class="item item-input item-stacked-label item-select">
+      <select ng-model="surveyInput.E1_f1" ng-change="eval_E1()">
+        <option value="Owner-with-permit">Owner</option>
+        <option value="Buyer">Buyer</option>
+        <option value="Amortizing">Beneficiary(still amortizing)</option>
+        <option value="Giprinda">Giprinda</option>
+        <option value="Renter">Renter</option>
+        <option value="Renter-free">Rent Free Occupant (Libre)</option>
+      </select>
+    </label><br> 
+
+
+    <div ng-show="surveyRaw.E1_buyerVisible">
+      <label class="item item-input item-stacked-label">
+        <div class="input-label">Kinsay gipalitan</div>
+        <input type="text" ng-model="surveyRaw.E1_details[0]">
+      </label><br>
+
+      <label class="item item-input item-stacked-label">
+        <div class="input-label">Pila pag palit</div>
+        <input type="number" ng-model="surveyRaw.E1_details[1]">
+      </label><br> 
+
+      <label class="item item-input item-stacked-label">
+        <div class="input-label">unsa nga tuig gipalit</div>
+        <input type="number" ng-model="surveyRaw.E1_details[2]">
+      </label><br> 
+    </div>
+
+    <div ng-show="surveyRaw.E1_giprindaVisible">
+      <label class="item item-input item-stacked-label">
+        <div class="input-label">Kinsay nagprinda</div>
+        <input type="text" ng-model="surveyRaw.E1_details[3]">
+      </label><br>
+
+      <label class="item item-input item-stacked-label">
+        <div class="input-label">Pila pag prinda</div>
+        <input type="number" ng-model="surveyRaw.E1_details[4]">
+      </label><br> 
+
+      <label class="item item-input item-stacked-label">
+        <div class="input-label">unsa nga tuig giprinda</div>
+        <input type="number" ng-model="surveyRaw.E1_details[5]">
+      </label><br> 
+    </div>
+
+    <div ng-show="surveyRaw.E1_renterVisible">
+      <label class="item item-input item-stacked-label">
+        <div class="input-label">Pila ang renta kada bulan </div>
+        <input type="number" ng-model="surveyRaw.E1_details[6]">
+      </label><br>
+
+      <label class="item item-input item-stacked-label">
+        <div class="input-label">Unsa nga portion sa balay <br> ang giplitihan</div>
+        <input type="text" ng-model="surveyRaw.E1_details[7]">
+      </label><br>
+
+      <label class="item item-input item-stacked-label">
+        <div class="input-label">Who is the owner</div>
+        <input type="text" ng-model="surveyRaw.E1_details[8]">
+      </label><br> 
+
+      <label class="item item-input item-stacked-label">
+        <div class="input-label">Relationship to the owner</div>
+        <input type="text" ng-model="surveyRaw.E1_details[9]">
+      </label><br> 
+    </div>
+
+    <div ng-show="surveyRaw.E1_rentFreeVisible">
+      <label class="item item-input item-stacked-label">
+        <div class="input-label">Unsa nga portion sa balay <br> ang gipuy-an</div>
+        <input type="text" ng-model="surveyRaw.E1_details[10]">
+      </label><br>
+
+      <label class="item item-input item-stacked-label">
+        <div class="input-label">Who is the owner</div>
+        <input type="text" ng-model="surveyRaw.E1_details[11]">
+      </label><br> 
+
+      <label class="item item-input item-stacked-label">
+        <div class="input-label">Relationship to the owner</div>
+        <input type="text" ng-model="surveyRaw.E1_details[12]">
+      </label><br> 
+    </div>
+    
+
+
+    <label class="item item-input item-stacked-label">
+        <div class="input-label">E2 Unsa na tuig nagsugod <br>ang inyong pagpuyo sa balay</div>
+        <input type="month" ng-model="surveyInput.E2_balayDate">
+    </label><br> 
+
+    <label class="item item-input">
+      <div class="input-label">
+        E3 Aduna bay yuta/balay inyong pamilya<br> nga rehistrado sa imong ngalan/kapikas<br> dinhi sa Cagayan de Oro o sa laing dapit <br>sa Pilipinas?.
+      </div>
+    </label>
+    <label class="item item-input item-stacked-label item-select">
+      <select ng-model="surveyInput.E3_otherHouse" ng-change="eval_E3()" >
+        <option value="Yes">Oo, Balay yuta</option>
+        <option value="No">Wala</option>
+      </select>
+    </label>
+    <div ng-show="surveyRaw.E3_visible">
+      <label class="item item-input item-stacked-label">
+        <div class="input-label">Asa dapita?</div>
+        <input type="text" ng-model="surveyInput.E3_otherHousePlace">
+      </label><br> 
+    </div>
+
+    <br>     
+
+    <label class="item item-input item-stacked-label">
+      <div class="input-label">E4 Remarks</div>
+      <textarea placeholder="Remarks" ng-model="surveyInput.E4_remarks2" rows="8"></textarea>
+    </label><br>
+    <button  class="button button-large button-full button-positive icon-left ion-android-add-circle" ng-click="confirmSave()">
+      SAVE PROFILE
+      </button> 
+  </div>
+  <div ng-hide="addProfileVisible">
+  <center>
+    <h4>SET THE AREA AND COORDINATOR AT SETTINGS TAB!</h4>
+    <H5>or TAP the seal below.</H5>
+     <img class="seal" src="img/cdoSeal.png" ng-click="goToSettings()" > 
+  </center>
+
+
+  </div>
+  </ion-content>
+</ion-view>

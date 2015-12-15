@@ -1,0 +1,44 @@
+<ion-view view-title="PROFILES">
+  <ion-content>
+  <!-- <button class="button button-full" ng-click="selectProfile()">retrieve profiles!</button> -->
+  
+    <label class="item item-input item-stacked-label">
+      <span class="input-label">Search</span>
+      <input ng-model="search" type="text" >
+    </label>
+      <ion-refresher
+    pulling-text="Pull to refresh..."
+    on-refresh="selectProfile()">
+  </ion-refresher>
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="profile in testArr | filter:search" type="item-text-wrap" >
+        
+        <h2><i>House Hold Head:</i> {{profile.fname}} {{profile.mname}} {{profile.lname}} </h2>
+        <h2>Entry Pass: {{profile.a1_entrypass}}</h2>
+        <h2>Certificate: {{profile.a1_certificate}}</h2>
+        <h2>Block: {{profile.blocknum}}</h2>
+        <h2>Lot: {{profile.lotnum}}</h2>
+        <h2>House: {{profile.housenum}}</h2>
+        <h2>Building Number: {{profile.buildingnum}}</h2>
+        <h2>Optional Address: {{profile.addres}}</h2>
+        <h2>Place of Origin: {{profile.placeoforigin}}</h2>
+        <h2>Reason for relocation: {{profile.reason}}</h2>
+        <h2>House Alteration: {{profile.house_alteration}}</h2>
+        <h2>Type of Alteration: {{profile.type_of_alterations}}</h2>
+        <h2>Water Source: {{profile.water_source}}</h2>
+        <h2>Electricity: {{profile.electricity}}</h2>
+        <h2>Household Amenities: {{profile.amenities}}</h2>
+        <h2>Vehicles: {{profile.vehicles}}</h2>
+        <h2>Estado sa pag puyo sa balay: {{profile.f1}}</h2>
+        <h2>Details: {{profile.details}}</h2>
+        <h2>Tuig nag sugod sa balay: {{profile.i1date}}</h2>
+        <h2>Beneficiary Status: {{profile.status}}</h2>
+        <h2>Number of people in Household: {{profile.familycount}}</h2>
+        <h2>Other Remarks: {{profile.remarks2}}</h2>
+        <h2>Laing Balay: {{profile.otherhouse}}</h2>
+        <h2>Asa dapita ang Laing Balay: {{profile.otherhouseplace}}</h2>
+        
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,85 @@
+.seal{
+  height: 100%;
+  width: 100%;
+}
+.item-input{
+  display: block;
+  font-size:26px !important;
+
+}
+
+.input-label {
+max-width: 100%;
+width: 100%;
+font-size:30px !important;
+
+}
+
+
+.item-select select {
+position: relative;
+}
+
+
+.item-select:after {
+top: 60%;
+
+}
+
+
+
+.animate-show {
+  line-height: 20px;
+  opacity: 1;
+  padding: 10px;
+  background: white;
+}
+
+.animate-show.ng-hide-add, .animate-show.ng-hide-remove {
+  transition: all linear 0.5s;
+}
+
+.animate-show.ng-hide {
+  line-height: 0;
+  opacity: 0;
+  padding: 0 10px;
+}
+
+.item-select select
+{
+    right: auto;
+    padding: 13px 45px 15px 0px;
+    direction: ltr;
+    background-color: #EDEDED;
+    width: 100%;
+}
+
+.noBorder {
+	outline: 0;
+}
+
+.ipAdd{
+  width: 25%;
+  float: left;
+  border: 1px;
+  border-color: black;
+  outline: 1px;
+}
+
+
+input[type=text] {
+    background-color: #EDEDED;
+    width: 98%;
+}
+input:focus {
+    background-color: #e5ffff;
+}
+
+input[type=date] {
+    background-color: #EDEDED;
+    width: 98%;
+}
+select {
+    background-color: #EDEDED;
+    width: 98%;
+}
