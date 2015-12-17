@@ -5,6 +5,7 @@
     <label class="item item-input item-stacked-label">
       <span class="input-label">Search</span>
       <input ng-model="search" type="text" >
+      <h1>Data Count: {{testArr.length}} </h1>
     </label>
       <ion-refresher
     pulling-text="Pull to refresh..."
@@ -13,6 +14,7 @@
     <ion-list>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="profile in testArr | filter:search" type="item-text-wrap" >
         
+        <h1>{{$index+1}}</h1>
         <h2><i>House Hold Head:</i> {{profile.fname}} {{profile.mname}} {{profile.lname}} </h2>
         <h2>Entry Pass: {{profile.a1_entrypass}}</h2>
         <h2>Certificate: {{profile.a1_certificate}}</h2>
@@ -37,6 +39,7 @@
         <h2>Other Remarks: {{profile.remarks2}}</h2>
         <h2>Laing Balay: {{profile.otherhouse}}</h2>
         <h2>Asa dapita ang Laing Balay: {{profile.otherhouseplace}}</h2>
+        <h2>date of interview: {{profile.date_interview}}</h2>
         
       </ion-item>
     </ion-list>

@@ -31,6 +31,21 @@ angular.module('profiler.controllers', ['ngCordova'])
      });
   };
 
+  //////////////////////////////////// add by axel for age validation
+  $scope.age = null;
+  $scope.validateAge = function validateAge() {  
+    // 31557600000 is length of a year from http://stackoverflow.com/questions/4060004/calculate-age-in-javascript
+    $scope.age= ~~((Date.now() - $scope.bGroupInput.B3_dob) / (31557600000));
+
+    if ($scope.bGroup.length < 1 && $scope.age < 18) { 
+      alert("House Hold Head must be atleast 18 years old");
+      $scope.bGroupInput.B3_dob = null;
+
+    }
+
+    console.log("Age "+$scope.age);
+  };
+
 
   $scope.insertProfile = function insertProfile() {
       console.log("INSERTION: STARTED");
@@ -61,10 +76,11 @@ angular.module('profiler.controllers', ['ngCordova'])
         $scope.dateInput,
         $scope.surveyInput.D16_remarks,
         $scope.surveyInput.E3_otherHouse,
-        $scope.surveyInput.E3_otherHousePlace
+        $scope.surveyInput.E3_otherHousePlace,
+        $rootScope.surveySettings.AOS.rid
       ]; 
       console.log("INSERTION: household_array compiled");
-      var query = "INSERT INTO table_household (a1_entrypass,a1_certificate,blocknum,lotnum,housenum,buildingnum,placeoforigin,reason,house_alteration,type_of_alterations,water_source,electricity,amenities,vehicles,f1,details,i1date,remarks,status,familycount,addres,date_interview,remarks2,otherhouse,otherhouseplace) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+      var query = "INSERT INTO table_household (a1_entrypass,a1_certificate,blocknum,lotnum,housenum,buildingnum,placeoforigin,reason,house_alteration,type_of_alterations,water_source,electricity,amenities,vehicles,f1,details,i1date,remarks,status,familycount,addres,date_interview,remarks2,otherhouse,otherhouseplace, surveyAreaId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       $cordovaSQLite.execute(db, query,household_array).then(function(result) {
           console.log("INSERTION: HOUSEHOLD INSERTED, ID -> "+ result.insertId);
           $scope.insertMember(result.insertId);
@@ -73,11 +89,14 @@ angular.module('profiler.controllers', ['ngCordova'])
           $scope.insertMPattern(result.insertId);
           console.log("INSERTION: COMPLETED!");
           $scope.refreshPage();
+          alert("Profile Successfully Inserted");
           
       }, function (err) {
           console.log("INSERTION: FAILED!");
           console.error(err);
           obj_dump(err);
+          alert(obj_dump(err));
+
       });
 
   };
@@ -94,6 +113,9 @@ angular.module('profiler.controllers', ['ngCordova'])
     $cordovaSQLite.execute(db, query,mPatternInsertArr).then(function(pattern) {
         console.log("INSERTION: MIGRATION PATTERN INSERTED, ID -> "+ pattern.insertId);
         var mPatternInsertArr = "";
+        $scope.mPattern_HH = "";
+        $scope.mPattern_SP = "";
+        $scope.mPattern = new Array();
         console.log("INSERTION: MIGRATION PATTERN purged!");
     }, function (err) {
         console.log("INSERTION: MIGRATION PATTERN INSERTION FAILED!");
@@ -197,6 +219,12 @@ angular.module('profiler.controllers', ['ngCordova'])
           console.log("INSERTION: MEMBER INSERTED, ID -> "+ member.insertId);
           var memberInsertArr = "";
           console.log("INSERTION: member_array purged!");
+          // added by axel to clear displyed member array and return HHH
+          if(i == $scope.bGroup.length){
+            $scope.bGroup = new Array(); 
+            $scope.surveyRaw.B1_arr = ["House Hold Head"];
+            $scope.bGroupInput.B3_dob = null;
+          }; ///// clear bGroup//////////////////////////////////////////////
       }, function (err) {
           console.log("INSERTION: MEMBER INSERTION FAILED!");
           console.error(err);
@@ -826,7 +854,7 @@ angular.module('profiler.controllers', ['ngCordova'])
  $scope.testArr = new Array();
 
 
-     var query = "SELECT table_household.a1_entrypass,table_household.a1_certificate,table_household.blocknum,table_household.lotnum,table_household.housenum,table_household.placeoforigin,table_household.reason,table_household.house_alteration,table_household.type_of_alterations,table_household.water_source,table_household.electricity,table_household.amenities,table_household.vehicles,table_household.f1,table_household.details,table_household.i1date ,table_household.remarks,table_household.status,table_household.addres,table_household.date_interview ,table_household.remarks2,table_household.otherhouse,table_household.otherhouseplace,table_head.fname,table_head.mname,table_head.lname FROM table_household INNER JOIN table_head ON table_household.hh_id = table_head.house_id WHERE table_head.relation = 'House Hold Head'";
+     var query = "SELECT table_household.a1_entrypass,table_household.a1_certificate,table_household.blocknum,table_household.lotnum,table_household.housenum,table_household.buildingnum,table_household.date_interview,table_household.placeoforigin,table_household.reason,table_household.house_alteration,table_household.type_of_alterations,table_household.water_source,table_household.electricity,table_household.amenities,table_household.vehicles,table_household.f1,table_household.details,table_household.i1date ,table_household.remarks,table_household.status,table_household.addres,table_household.date_interview ,table_household.remarks2,table_household.otherhouse,table_household.otherhouseplace,table_head.fname,table_head.mname,table_head.lname FROM table_household INNER JOIN table_head ON table_household.hh_id = table_head.house_id WHERE table_head.relation = 'House Hold Head'";
         $cordovaSQLite.execute(db, query).then(function(res) {
             if(res.rows.length > 0) {
               for (var i = 0; i < res.rows.length; i++) {
@@ -854,7 +882,7 @@ angular.module('profiler.controllers', ['ngCordova'])
 
 })
 
-.controller('settingsCtrl', function($scope, $rootScope,$state, $cordovaSQLite, $http) { // SETTINGS CONTROLLER!!!!!!!!!!!!!!!!!!!!!!
+.controller('settingsCtrl', function($scope, $rootScope,$state, $cordovaSQLite, $http, $ionicPopup) { // SETTINGS CONTROLLER!!!!!!!!!!!!!!!!!!!!!!
   
   $rootScope.surveySettings={
     AOS:null,
@@ -882,35 +910,56 @@ angular.module('profiler.controllers', ['ngCordova'])
 
 
  $scope.purge = function purge(){
+   var confirmPopup = $ionicPopup.confirm({
+     title: 'Are sure you want to delete the Database',
+     template: 'Are you sure you want to eat this ice cream?'
+   });
+   confirmPopup.then(function(res) {
+     if(res) {
       $cordovaSQLite.deleteDB("profiler.db");
       alert("Database Deleted!");
       db = $cordovaSQLite.openDB({ name: "profiler.db" });
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS table_household  (hh_id integer primary key, a1_entrypass text, a1_certificate text, blocknum text, lotnum text, housenum text, buildingnum text, placeoforigin text, reason text, house_alteration text, type_of_alterations text, water_source text, electricity text, amenities text, vehicles text, f1 text, details text, i1date text, remarks text, status text, familycount text, addres text, date_interview text, remarks2 text, otherhouse text, otherhouseplace text)");
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS table_head (head_id integer primary key,house_id integer, fname text, mname text, lname text, bdate date, education text, income integer, gender text, bplace text, maritalstatus text, placeofwork text, relation text, disabled text, pregnant text, lactating text, seniorcitizen text, other_healthstatus text, occupation text, status_occupation text, inactive text, membership text, skills text, beneficiary text, inactivereason text)");    
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS iga (iga_id integer primary key,house_id integer,c1 text,c2 text,c3 text,c4 text,remarks text)");    
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS table_service (s_id integer primary key,house_id integer, water text, electricity text, healthcenter text, privateclinic text, healers text, daycare text, elemschool text, highschool text, market text, barangayhall text, policeoutpost text, garbagecollection text, facilities text, transport text, remarks text, toilet text)");    
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS migration_pattern (mp_id integer primary key,house_id integer,hhpattern text, sppattern text)");    
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS user (u_id integer primary key, area_coord text, area_survey text, date_interview text, HHH text)");    
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS resettlement_area (r_id integer primary key, resname text, household text)"); 
+      $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS table_household  (hh_id integer primary key, a1_entrypass text, a1_certificate text, blocknum text, lotnum text, housenum text, buildingnum text, placeoforigin text, reason text, house_alteration text, type_of_alterations text, water_source text, electricity text, amenities text, vehicles text, f1 text, details text, i1date text, remarks text, status text, familycount text, addres text, date_interview text, remarks2 text, otherhouse text, otherhouseplace text, surveyAreaId text)");
+      $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS table_head (head_id integer primary key,house_id integer, fname text, mname text, lname text, bdate date, education text, income integer, gender text, bplace text, maritalstatus text, placeofwork text, relation text, disabled text, pregnant text, lactating text, seniorcitizen text, other_healthstatus text, occupation text, status_occupation text, inactive text, membership text, skills text, beneficiary text, inactivereason text)");    
+      $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS iga (iga_id integer primary key,house_id integer,c1 text,c2 text,c3 text,c4 text,remarks text)");    
+      $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS table_service (s_id integer primary key,house_id integer, water text, electricity text, healthcenter text, privateclinic text, healers text, daycare text, elemschool text, highschool text, market text, barangayhall text, policeoutpost text, garbagecollection text, facilities text, transport text, remarks text, toilet text)");    
+      $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS migration_pattern (mp_id integer primary key,house_id integer,hhpattern text, sppattern text)");    
+      $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS user (u_id integer primary key, area_coord text, area_survey text, date_interview text, HHH text)");    
+      $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS resettlement_area (r_id integer primary key, resname text, household text)"); 
       alert("Database Created!");
       $scope.testArr = new Array();
-      $scope.purgeSwitch = 0;
+  
+     } else {
+       console.log('You are not sure');
+     }
+   });
  };
- $scope.purgeSwitch = 0;
- $scope.devPurge = function devPurge(){
-  $scope.purgeSwitch = $scope.purgeSwitch + 1 ;
-  console.log("Purge Switch Count: " + $scope.purgeSwitch)
-  if ($scope.purgeSwitch >20){$scope.purge();};
- };
+ // $scope.purgeSwitch = 0;
+ // $scope.devPurge = function devPurge(){
+ //  $scope.purgeSwitch = $scope.purgeSwitch + 1 ;
+ //  console.log("Purge Switch Count: " + $scope.purgeSwitch)
+ //  if ($scope.purgeSwitch >20){$scope.purge();};
+ // };
+
+  $scope.ShowAdminButton = false;
+
+  $scope.adminPrivCount = 0;
+  $scope.adminOptions = function adminOptions(){
+    $scope.adminPrivCount = $scope.adminPrivCount + 1 ;
+    console.log("Admin Privilege Counter: " + $scope.adminPrivCount)
+    if ($scope.adminPrivCount >10){ $scope.ShowAdminButton = true;};
+  }; 
 
   // test changing domain
   $scope.newDomain = "192.168.0.100";
   $scope.ipIsSet = false;
   $scope.surveyAreaList = new Array();
-  var testResArea = "1"; // To be repalced used @ function saveHouse()
 
   $scope.serverStatus = "DISCONNECTED";
-
+  // debug and sync checker
+  $scope.successCounter = 0; // debug and sync checker
+  $scope.memberCount = 0; // debug
+  $scope.memberSucCount = 0; // debug
 
   $scope.loadArea = function loadArea(){
      var query = "SELECT rid, resname FROM resettlement_area";
@@ -928,33 +977,9 @@ angular.module('profiler.controllers', ['ngCordova'])
             }
         }, function (err) {
             obj_dump(err);
-            alert("error!");
+            alert("error: Please Resync Resettlement Area");
         });    
 
-  };
-
-  $scope.testCon = function testCon(ip)
-  {
-    $scope.ipIsSet = true;
-    var serverDomain = ip;
-    $scope.testPoint = "http://" + serverDomain + "/Api/ProfilerApi/testCon";
-    if ($scope.ipIsSet) {
-      alert("Connection Test: Press OK to continue");
-      console.log("Connection test using " + $scope.testPoint);
-      $http.get($scope.testPoint)
-      .success( function ( Res ) {
-          alert(Res.Response);
-          $scope.serverStatus = "CONNECTED"
-
-      } )
-      .error(function ( error ) {
-          alert('error Res:' + error.message);
-          console.log('error Res:' + error.message);
-          $scope.serverStatus = "DISCONNECTED";
-      });
-    } else {
-      alert("Please Set the IP address");
-    };
   };
 
   $scope.changeDomain = function changeDomain(ip) {
@@ -967,8 +992,21 @@ angular.module('profiler.controllers', ['ngCordova'])
     $scope.endPoint3 = "http://" + serverDomain + "/Api/ProfilerApi/newIga";
     $scope.endPoint4 = "http://" + serverDomain + "/Api/ProfilerApi/newMigration";
     $scope.endPoint5 = "http://" + serverDomain + "/Api/ProfilerApi/newHouseMember";
+    $scope.testPoint = "http://" + serverDomain + "/Api/ProfilerApi/testCon";
     alert("Server Syncing Address: " + serverDomain);
-    $scope.serverStatus = "DISCONNECTED";
+    
+    $http.get($scope.testPoint)
+      .success( function ( Res ) {
+          alert(Res.Response);
+          $scope.serverStatus = "CONNECTED"
+
+      } )
+      .error(function ( error ) {
+          alert('error Res:' + error.message);
+          console.log('error Res:' + error.message);
+          $scope.serverStatus = "DISCONNECTED";
+      });
+
   };
   
 
@@ -1019,9 +1057,14 @@ angular.module('profiler.controllers', ['ngCordova'])
   $scope.syncDB = function syncDB() {
     console.log("Syncing process active");
     alert("Syncing process active");
+    // clear all varaible
+    $scope.successCounter = 0; // debug 
+    $scope.memberCount = 0; // debug 
+    $scope.memberSucCount = 0; // debug 
+
     var housedata = new Array();
     var getAllHouseRec = function getAllHouseRec(){ 
-      var query = "SELECT hh_id, a1_entrypass , a1_certificate , blocknum , lotnum , housenum , placeoforigin , reason , house_alteration , type_of_alterations , water_source , electricity , amenities , vehicles , f1 , details , i1date , remarks , status , addres , date_interview , remarks2 , otherhouse , otherhouseplace FROM table_household";
+      var query = "SELECT hh_id, a1_entrypass , a1_certificate , blocknum , lotnum , housenum , placeoforigin , reason , house_alteration , type_of_alterations , water_source , electricity , amenities , vehicles , f1 , details , i1date , remarks , status , addres , date_interview , remarks2 , otherhouse , otherhouseplace, surveyAreaId, buildingnum, familycount FROM table_household";
       $cordovaSQLite.execute(db, query).then(function(res) {
         if(res.rows.length > 0) {
           for (var i = 0; i < res.rows.length; i++) {
@@ -1056,8 +1099,13 @@ angular.module('profiler.controllers', ['ngCordova'])
       $http.post( $scope.endPoint1 , houseData )
         .success( function ( houseRes ) {          
           console.log("Sync Success HouseID: "+ houseRes);
-          var memberCode = testResArea + houseRes + houseData.blocknum + houseData.lotnum + houseData.housenum;
+          // var memberCode = houseData.surveyAreaId + houseRes + houseData.blocknum + houseData.lotnum + houseData.housenum;
+          var memberCode = houseData.surveyAreaId + houseRes;
+          if(houseData.blocknum != null) {memberCode = memberCode+ houseData.blocknum; }; 
+          if(houseData.lotnum != null) {memberCode = memberCode + houseData.lotnum; }; 
+          if(houseData.housenum != null) {memberCode = memberCode + houseData.housenum; }; 
           $scope.saveServiceToDB(houseRes, memberCode, houseData.hh_id); // params(serverhouseID, memberUniqeHouse,mobilehouseID )     
+          $scope.successCounter++;
         } )
         .error(function ( error ) {          
           alert("Sync error House: " + error );
@@ -1072,6 +1120,7 @@ angular.module('profiler.controllers', ['ngCordova'])
   }; 
 
 
+
   $scope.saveServiceToDB = function saveServiceToDB( hid, memberCode, local_hid ){
     var serviceData = new Array();
     var query = "SELECT water, electricity, healthcenter, privateclinic, healers, daycare, elemschool, highschool, market, barangayhall, policeoutpost, garbagecollection, facilities, transport, remarks, toilet FROM table_service WHERE house_id = " + local_hid ;
@@ -1080,7 +1129,8 @@ angular.module('profiler.controllers', ['ngCordova'])
       saveService();
     }, function (err) { 
       alert("service error get data " + err); 
-      console.log(err); 
+      console.log("service error get data " + err); 
+       
     });
 
 
@@ -1097,6 +1147,7 @@ angular.module('profiler.controllers', ['ngCordova'])
         });
     }
   };
+
 
 
   $scope.saveIgaToDB = function saveIgaToDB( hid, memberCode, local_hid ){
@@ -1126,6 +1177,7 @@ angular.module('profiler.controllers', ['ngCordova'])
   };
 
 
+
   $scope.saveMigToDB = function saveMigToDB( hid, memberCode, local_hid ){
     var migData = new Array();
     var query = "SELECT hhpattern, sppattern FROM migration_pattern WHERE house_id = " + local_hid ;
@@ -1153,6 +1205,7 @@ angular.module('profiler.controllers', ['ngCordova'])
   };
 
 
+
   $scope.saveMemberToDB = function saveMemberToDB( hid, memberCode, local_hid ){ 
     var memberData = new Array();
     var query = "SELECT fname, mname, lname, bdate, education, income integer, gender, bplace, maritalstatus, placeofwork, relation, disabled, pregnant, lactating, seniorcitizen, other_healthstatus, occupation, status_occupation, inactive, membership, skills, beneficiary, inactivereason FROM table_head WHERE house_Id = " + local_hid ;
@@ -1171,6 +1224,14 @@ angular.module('profiler.controllers', ['ngCordova'])
       alert("member error get data ");
     });
 
+    // debug 
+    var query2 = "SELECT fname, mname, lname, bdate, education, income integer, gender, bplace, maritalstatus, placeofwork, relation, disabled, pregnant, lactating, seniorcitizen, other_healthstatus, occupation, status_occupation, inactive, membership, skills, beneficiary, inactivereason FROM table_head" ;
+    $cordovaSQLite.execute(db, query2).then(function(res) {
+     $scope.memberCount = res.rows.length;
+    }, function (err) {
+      console.error("member error get data ");
+      alert("member error get data ");
+    }); // debug 
 
     var saveMember = function saveMember( ){
       for (var count = 0; count < memberData.length; count++) {
@@ -1178,17 +1239,18 @@ angular.module('profiler.controllers', ['ngCordova'])
         memberData[count].memCode = memberCode;
         $http.post( $scope.endPoint5 , memberData[count] )
           .success( function ( memberRes ) { 
-            alert("Sync Success MemberID: "+ memberRes);
+            // alert("Sync Success MemberID: "+ memberRes);
             console.log("Sync Success MemberID: "+ memberRes);
+            $scope.memberSucCount++; // debug
+            if( $scope.memberSucCount == $scope.memberCount ) { alert("Remote Server Sync Complete !") };
           } )
           .error(function ( error ) {
-             alert('error api Member call: ' + error.message);
+             // alert('error api Member call: ' + error.message);
              console.log('error api Member call: ' + error.message);
           });
       };
       memberData = new Array();// clean the variable 
     }
   };
-
 
 });

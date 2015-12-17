@@ -13,7 +13,7 @@
         Socialized Housing Program      </br>
         Version: 0426451800             </br>
         For the area of                 </br> <!-- add area settings in the SETTINGS TAB -->
-        {{surveySettings.AOS}}
+        {{surveySettings.AOS.resname}}
     </h3>
 
     <h4>{{date | date:'medium'}}</h4>
@@ -106,6 +106,7 @@
      </label>
     <label class="item item-input item-stacked-label item-select">
       <select ng-model="surveyInput.A6_waterSource" ng-change="eval_A6()">
+        <option value="" >None</option>
         <option value="COWD">COWD</option>
         <option value="Deep Well">Deep Well</option>
         <option value="Communal">Communal</option>
@@ -143,6 +144,7 @@
      </label>
     <label class="item item-input item-stacked-label item-select">
       <select ng-model="surveyInput.A9_typeOfAlterations" ng-change="eval_A9()">
+        <option value="" >None</option>
         <option value="Horizontal">Horizontal</option>
         <option value="Vertical">Vertical</option>
         <option value="Concrete Fence">Concrete Fence</option>
@@ -259,8 +261,14 @@
 
         <label class="item item-input item-stacked-label">
           <div class="input-label">B3 Date of Birth</div>
-          <input type="date" max="{{date}}" ng-model="bGroupInput.B3_dob">
+          <input type="date" max="{{date}}" ng-model="bGroupInput.B3_dob" ng-change="validateAge()">
         </label>
+
+        <label class="item item-input item-stacked-label">
+          <div class="input-label">Age</div>
+          <input type="text" ng-model="age" disabled>
+        </label>
+
         <label class="item item-input item-stacked-label">
           <div class="input-label">B4 Birthplace</div>
           <input type="text" ng-model="bGroupInput.B4_birthplace" >
@@ -426,6 +434,7 @@
         </label>
         <label class="item item-input item-stacked-label item-select">
           <select ng-model="bGroupInput.B14_healthStatus" ng-change="eval_B14()">
+            <option value="">None</option>
             <option value="Disabled">Disabled</option>
             <option value="Pregnant">Pregnant</option>
             <option value="Lactating">Lactating</option>

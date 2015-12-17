@@ -44,15 +44,21 @@ angular.module('profiler', ['ionic', 'profiler.controllers', 'profiler.services'
     };
     
     
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS table_household  (hh_id integer primary key, a1_entrypass text, a1_certificate text, blocknum text, lotnum text, housenum text, buildingnum text, placeoforigin text, reason text, house_alteration text, type_of_alterations text, water_source text, electricity text, amenities text, vehicles text, f1 text, details text, i1date text, remarks text, status text, familycount text, addres text, date_interview text, remarks2 text, otherhouse text, otherhouseplace text)");
+    // $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS table_household  (hh_id integer primary key, a1_entrypass text, a1_certificate text, blocknum text, lotnum text, housenum text, buildingnum text, placeoforigin text, reason text, house_alteration text, type_of_alterations text, water_source text, electricity text, amenities text, vehicles text, f1 text, details text, i1date text, remarks text, status text, familycount text, addres text, date_interview text, remarks2 text, otherhouse text, otherhouseplace text, surveyArea text )");
+    // $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS table_head (head_id integer primary key,house_id integer, fname text, mname text, lname text, bdate date, education text, income integer, gender text, bplace text, maritalstatus text, placeofwork text, relation text, disabled text, pregnant text, lactating text, seniorcitizen text, other_healthstatus text, occupation text, status_occupation text, inactive text, membership text, skills text, beneficiary text, inactivereason text)");    
+    // $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS iga (iga_id integer primary key,house_id integer,c1 text,c2 text,c3 text,c4 text,remarks text)");    
+    // $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS table_service (s_id integer primary key,house_id integer, water text, electricity text, healthcenter text, privateclinic text, healers text, daycare text, elemschool text, highschool text, market text, barangayhall text, policeoutpost text, garbagecollection text, facilities text, transport text, remarks text, toilet text)");    
+    // $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS migration_pattern (mp_id integer primary key,house_id integer,hhpattern text, sppattern text)");    
+    // $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS user (u_id integer primary key, area_coord text, area_survey text, date_interview text, HHH text)");    
+    // $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS resettlement_area (r_id integer primary key,rid integer, resname text, household text)");    
+    
+    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS table_household  (hh_id integer primary key, a1_entrypass text, a1_certificate text, blocknum text, lotnum text, housenum text, buildingnum text, placeoforigin text, reason text, house_alteration text, type_of_alterations text, water_source text, electricity text, amenities text, vehicles text, f1 text, details text, i1date text, remarks text, status text, familycount text, addres text, date_interview text, remarks2 text, otherhouse text, otherhouseplace text, surveyAreaId text)");
     $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS table_head (head_id integer primary key,house_id integer, fname text, mname text, lname text, bdate date, education text, income integer, gender text, bplace text, maritalstatus text, placeofwork text, relation text, disabled text, pregnant text, lactating text, seniorcitizen text, other_healthstatus text, occupation text, status_occupation text, inactive text, membership text, skills text, beneficiary text, inactivereason text)");    
     $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS iga (iga_id integer primary key,house_id integer,c1 text,c2 text,c3 text,c4 text,remarks text)");    
     $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS table_service (s_id integer primary key,house_id integer, water text, electricity text, healthcenter text, privateclinic text, healers text, daycare text, elemschool text, highschool text, market text, barangayhall text, policeoutpost text, garbagecollection text, facilities text, transport text, remarks text, toilet text)");    
     $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS migration_pattern (mp_id integer primary key,house_id integer,hhpattern text, sppattern text)");    
     $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS user (u_id integer primary key, area_coord text, area_survey text, date_interview text, HHH text)");    
-    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS resettlement_area (r_id integer primary key, resname text, household text)");    
-    
-    
+    $cordovaSQLite.execute(db, "CREATE TABLE IF NOT EXISTS resettlement_area (r_id integer primary key, resname text, household text)"); 
 
     
 
